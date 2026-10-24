@@ -161,10 +161,10 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95">
+    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[92vh] overflow-y-auto border border-slate-200 animate-in fade-in zoom-in-95">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
           <div>
             <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
               <PenTool className="w-4 h-4 text-blue-600" />
@@ -193,7 +193,7 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
 
           {/* Canvas Pad */}
           <div className="flex flex-col items-center">
-            <div className="relative border-2 border-dashed border-slate-300 rounded-xl overflow-hidden bg-white shadow-inner">
+            <div className="relative border-2 border-dashed border-slate-300 rounded-xl overflow-hidden bg-white shadow-inner max-w-full">
               <canvas
                 ref={canvasRef}
                 width={360}
@@ -205,7 +205,7 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
                 onTouchStart={startDrawing}
                 onTouchMove={draw}
                 onTouchEnd={stopDrawing}
-                className="cursor-crosshair touch-none"
+                className="cursor-crosshair touch-none max-w-full h-auto"
               />
               {!hasDrawn && (
                 <div className="absolute inset-0 pointer-events-none flex items-center justify-center text-slate-300 text-xs italic">

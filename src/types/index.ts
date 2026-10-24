@@ -1,4 +1,30 @@
-export type ActivityCategory = 'Mengajar' | 'Kepanitiaan' | 'Kegiatan Lainnya';
+export type ActivityCategory =
+  | 'Pembelajaran'
+  | 'Asesmen'
+  | 'Kegiatan Keagamaan'
+  | 'Kegiatan Kesiswaan'
+  | 'Pembiasaan dan Penguatan Karakter'
+  | 'Kebersihan dan Lingkungan Madrasah'
+  | 'Pengembangan Kompetensi Guru'
+  | 'Hubungan dengan Orang Tua dan Komite'
+  | 'Peringatan Hari Besar dan Perayaan Madrasah'
+  | 'Kompetisi dan Pengembangan Prestasi'
+  | 'Administrasi dan Manajemen Madrasah'
+  | string;
+
+export const ACTIVITY_CATEGORIES: string[] = [
+  'Pembelajaran',
+  'Asesmen',
+  'Kegiatan Keagamaan',
+  'Kegiatan Kesiswaan',
+  'Pembiasaan dan Penguatan Karakter',
+  'Kebersihan dan Lingkungan Madrasah',
+  'Pengembangan Kompetensi Guru',
+  'Hubungan dengan Orang Tua dan Komite',
+  'Peringatan Hari Besar dan Perayaan Madrasah',
+  'Kompetisi dan Pengembangan Prestasi',
+  'Administrasi dan Manajemen Madrasah',
+];
 
 export interface DailyActivityItem {
   id: string;

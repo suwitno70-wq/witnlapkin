@@ -15,7 +15,7 @@ import {
   Calendar,
   Check
 } from 'lucide-react';
-import { ActivityCategory, DailyActivityItem, ReportConfig, SummaryActivityItem, TeacherProfile } from '../types';
+import { ACTIVITY_CATEGORIES, ActivityCategory, DailyActivityItem, ReportConfig, SummaryActivityItem, TeacherProfile } from '../types';
 import {
   countKeywordOccurrences,
   calculateTeachingSessions,
@@ -23,6 +23,7 @@ import {
   calculateReportStats,
 } from '../utils/calculator';
 import { ConfirmModal } from './ConfirmModal';
+import { getCategoryBadgeClass } from './DailyActivitiesEditor';
 
 interface AutoIntegrationManagerProps {
   config: ReportConfig;
@@ -49,7 +50,7 @@ export const AutoIntegrationManager: React.FC<AutoIntegrationManagerProps> = ({
 
   // Form
   const [taskName, setTaskName] = useState('');
-  const [category, setCategory] = useState<ActivityCategory>('Mengajar');
+  const [category, setCategory] = useState<ActivityCategory>('Pembelajaran');
   const [matchKeyword, setMatchKeyword] = useState('');
   const [volume, setVolume] = useState<number>(1);
   const [unit, setUnit] = useState('Kegiatan');
@@ -61,7 +62,7 @@ export const AutoIntegrationManager: React.FC<AutoIntegrationManagerProps> = ({
   const handleOpenAdd = () => {
     setEditingId(null);
     setTaskName('');
-    setCategory('Mengajar');
+    setCategory('Pembelajaran');
     setMatchKeyword('');
     setVolume(1);
     setUnit('Kegiatan');
@@ -72,7 +73,7 @@ export const AutoIntegrationManager: React.FC<AutoIntegrationManagerProps> = ({
   const handleOpenEdit = (item: SummaryActivityItem) => {
     setEditingId(item.id);
     setTaskName(item.taskName);
-    setCategory(item.category || 'Mengajar');
+    setCategory(item.category || 'Pembelajaran');
     setMatchKeyword(item.matchKeyword || '');
     setVolume(item.volume);
     setUnit(item.unit || 'Kegiatan');
@@ -281,7 +282,7 @@ export const AutoIntegrationManager: React.FC<AutoIntegrationManagerProps> = ({
 
       {/* Summary Table Configuration */}
       <div className="border border-slate-200 rounded-lg overflow-x-auto shadow-xs">
-        <table className="w-full text-xs text-left border-collapse">
+        <table className="w-full text-xs text-left border-collapse min-w-[620px]">
           <thead className="bg-slate-50 text-slate-700 font-semibold uppercase text-[10px] tracking-wider border-b border-slate-200">
             <tr>
               <th className="py-2.5 px-3 w-12 text-center">No</th>
@@ -334,13 +335,9 @@ export const AutoIntegrationManager: React.FC<AutoIntegrationManagerProps> = ({
                   </td>
                   <td className="py-2.5 px-3">
                     <span
-                      className={`inline-block px-2 py-0.5 rounded text-[10px] font-medium ${
-                        sum.category === 'Mengajar'
-                          ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                          : sum.category === 'Kepanitiaan'
-                          ? 'bg-purple-50 text-purple-700 border border-purple-200'
-                          : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                      }`}
+                      className={`inline-block px-2 py-0.5 rounded text-[10px] font-medium ${getCategoryBadgeClass(
+                        sum.category || 'Pembelajaran'
+                      )}`}
                     >
                       {sum.category || 'Umum'}
                     </span>
@@ -394,8 +391,8 @@ export const AutoIntegrationManager: React.FC<AutoIntegrationManagerProps> = ({
 
       {/* Modal Add / Edit Summary Item */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 border border-slate-200 animate-in fade-in zoom-in-95">
+        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-4 sm:p-6 border border-slate-200 animate-in fade-in zoom-in-95 max-h-[92vh] overflow-y-auto">
             <h3 className="text-base font-bold text-slate-900 mb-4 pb-2 border-b border-slate-100">
               {editingId ? 'Edit Baris Capaian (Lampiran 2)' : 'Tambah Baris Capaian (Lampiran 2)'}
             </h3>
@@ -423,11 +420,16 @@ export const AutoIntegrationManager: React.FC<AutoIntegrationManagerProps> = ({
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value as ActivityCategory)}
-                    className="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                    className="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-hidden bg-white"
                   >
-                    <option value="Mengajar">Mengajar</option>
-                    <option value="Kepanitiaan">Kepanitiaan</option>
-                    <option value="Kegiatan Lainnya">Kegiatan Lainnya</option>
+                    {ACTIVITY_CATEGORIES.map((cat, idx) => (
+                      <option key={cat} value={cat}>
+                        {idx + 1}. {cat}
+                      </option>
+                    ))}
+                    {!ACTIVITY_CATEGORIES.includes(category) && (
+                      <option value={category}>{category}</option>
+                    )}
                   </select>
                 </div>
 

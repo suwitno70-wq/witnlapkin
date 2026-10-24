@@ -25,7 +25,7 @@ export const Lampiran1View: React.FC<Lampiran1ViewProps> = ({
       className={`print-sheet bg-white text-black font-sans mx-auto transition-all ${
         isPrintMode
           ? 'w-full p-0 shadow-none'
-          : 'max-w-4xl p-8 sm:p-12 shadow-lg border border-slate-200 rounded-sm'
+          : 'max-w-4xl p-3 sm:p-6 md:p-12 shadow-lg border border-slate-200 rounded-lg'
       }`}
       style={{ minHeight: isPrintMode ? 'auto' : '1100px' }}
     >

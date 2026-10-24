@@ -16,8 +16,10 @@ import {
   ChevronRight,
   Filter,
   Info,
+  LayoutList,
+  Grid,
 } from 'lucide-react';
-import { ActivityCategory, DailyActivityItem, ReportConfig, TeacherProfile } from '../types';
+import { ACTIVITY_CATEGORIES, ActivityCategory, DailyActivityItem, ReportConfig, TeacherProfile } from '../types';
 import {
   buildMonthCalendar,
   CalendarDayInfo,
@@ -28,6 +30,7 @@ import {
   SchedulePreset,
 } from '../utils/calendarHelper';
 import { ConfirmModal } from './ConfirmModal';
+import { getCategoryBadgeClass } from './DailyActivitiesEditor';
 
 interface CalendarManagerProps {
   config: ReportConfig;
@@ -55,6 +58,8 @@ export const CalendarManager: React.FC<CalendarManagerProps> = ({
       : 'pembelajaran_umum'
   );
   const [customHolidays, setCustomHolidays] = useState<string[]>([]);
+  const [calendarViewMode, setCalendarViewMode] = useState<'agenda' | 'matrix'>('agenda');
+  const [agendaFilter, setAgendaFilter] = useState<'all' | 'working' | 'has_activities'>('all');
 
   // Month & Year state
   const currentMonthName = config.monthName || 'September';
@@ -69,7 +74,7 @@ export const CalendarManager: React.FC<CalendarManagerProps> = ({
 
   // Single Activity Form inside modal
   const [editingActivityId, setEditingActivityId] = useState<string | null>(null);
-  const [formCategory, setFormCategory] = useState<ActivityCategory>('Mengajar');
+  const [formCategory, setFormCategory] = useState<ActivityCategory>('Pembelajaran');
   const [formDesc, setFormDesc] = useState<string>('Proses Belajar Mengajar');
   const [formProof, setFormProof] = useState<string>('Dokumen');
 
@@ -133,7 +138,7 @@ export const CalendarManager: React.FC<CalendarManagerProps> = ({
   const handleOpenDayModal = (day: CalendarDayInfo) => {
     setActiveDayCell(day);
     setEditingActivityId(null);
-    setFormCategory('Mengajar');
+    setFormCategory('Pembelajaran');
     setFormDesc(
       day.dayOfWeek === 1
         ? 'Upacara Bendera\nProses Belajar Mengajar'
@@ -390,8 +395,222 @@ export const CalendarManager: React.FC<CalendarManagerProps> = ({
         </div>
       </div>
 
-      {/* 4. Visual Calendar Matrix */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      {/* 4. Calendar View Mode Switcher */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <div className="inline-flex bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
+            <button
+              type="button"
+              onClick={() => setCalendarViewMode('agenda')}
+              className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
+                calendarViewMode === 'agenda'
+                  ? 'bg-white text-blue-700 shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <LayoutList className="w-3.5 h-3.5" />
+              <span>Daftar Agenda (Optimal HP)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setCalendarViewMode('matrix')}
+              className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
+                calendarViewMode === 'matrix'
+                  ? 'bg-white text-blue-700 shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Grid className="w-3.5 h-3.5" />
+              <span>Matriks Kalender 7-Hari</span>
+            </button>
+          </div>
+        </div>
+
+        {calendarViewMode === 'agenda' && (
+          <div className="flex items-center gap-1.5 text-xs overflow-x-auto pb-1">
+            <button
+              type="button"
+              onClick={() => setAgendaFilter('all')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition ${
+                agendaFilter === 'all'
+                  ? 'bg-slate-900 text-white'
+                  : 'bg-slate-100 text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Semua ({calendarData.days.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => setAgendaFilter('working')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition ${
+                agendaFilter === 'working'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-slate-100 text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Hari Kerja ({calendarData.totalWorkingDays})
+            </button>
+            <button
+              type="button"
+              onClick={() => setAgendaFilter('has_activities')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition ${
+                agendaFilter === 'has_activities'
+                  ? 'bg-emerald-600 text-white'
+                  : 'bg-slate-100 text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Terisi ({calendarData.days.filter((d) => d.activities.length > 0).length})
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* 5A. Mobile-Optimized Daily Agenda List */}
+      {calendarViewMode === 'agenda' && (
+        <div className="space-y-3">
+          {calendarData.days
+            .filter((day) => {
+              if (agendaFilter === 'working') return day.isWorkingDay;
+              if (agendaFilter === 'has_activities') return day.activities.length > 0;
+              return true;
+            })
+            .map((day) => {
+              const hasActivities = day.activities.length > 0;
+              const isToday =
+                new Date().getDate() === day.date &&
+                new Date().getMonth() === calendarData.monthIndex &&
+                new Date().getFullYear() === calendarData.year;
+
+              return (
+                <div
+                  key={`agenda-${day.fullDateStr}`}
+                  className={`bg-white rounded-xl border p-3.5 shadow-xs transition ${
+                    isToday
+                      ? 'border-blue-500 ring-2 ring-blue-500/20'
+                      : day.isSunday
+                      ? 'border-rose-200 bg-rose-50/20'
+                      : day.isHoliday
+                      ? 'border-amber-200 bg-amber-50/20'
+                      : 'border-slate-200'
+                  }`}
+                >
+                  {/* Day Header */}
+                  <div className="flex items-start justify-between gap-2 pb-2.5 border-b border-slate-100">
+                    <div className="flex items-center gap-2">
+                      <div
+                        className={`w-10 h-10 rounded-xl flex flex-col items-center justify-center font-bold shrink-0 ${
+                          day.isSunday || day.isHoliday
+                            ? 'bg-rose-100 text-rose-800'
+                            : isToday
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-slate-100 text-slate-800'
+                        }`}
+                      >
+                        <span className="text-sm font-mono leading-none">{day.date}</span>
+                        <span className="text-[9px] uppercase tracking-wider font-semibold opacity-80 mt-0.5">
+                          {day.dayName.substring(0, 3)}
+                        </span>
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="font-bold text-sm text-slate-900">{day.dayName}</span>
+                          <span className="text-xs text-slate-500 font-mono">({day.fullDateStr})</span>
+                          {isToday && (
+                            <span className="text-[10px] bg-blue-100 text-blue-700 font-bold px-1.5 py-0.2 rounded-full">
+                              Hari Ini
+                            </span>
+                          )}
+                        </div>
+                        {day.holidayName ? (
+                          <span className="text-xs text-rose-600 font-semibold block mt-0.5">
+                            ★ {day.holidayName}
+                          </span>
+                        ) : day.isSunday ? (
+                          <span className="text-xs text-rose-500 font-medium block mt-0.5">Hari Libur Mingguan</span>
+                        ) : day.isWeekend ? (
+                          <span className="text-xs text-slate-500 font-medium block mt-0.5">Akhir Pekan (Sabtu)</span>
+                        ) : (
+                          <span className="text-xs text-emerald-600 font-medium block mt-0.5">Hari Kerja Efektif</span>
+                        )}
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleOpenDayModal(day)}
+                      className="px-2.5 py-1 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition shrink-0"
+                    >
+                      + Tambah
+                    </button>
+                  </div>
+
+                  {/* Activities List inside Day */}
+                  <div className="pt-2.5">
+                    {hasActivities ? (
+                      <div className="space-y-2">
+                        {day.activities.map((act) => (
+                          <div
+                            key={act.id}
+                            className="bg-slate-50 rounded-lg p-2.5 border border-slate-200 flex items-start justify-between gap-2"
+                          >
+                            <div className="space-y-1 flex-1 min-w-0">
+                              <span
+                                className={`inline-block px-2 py-0.5 rounded text-[10px] font-semibold ${getCategoryBadgeClass(
+                                  act.category
+                                )}`}
+                              >
+                                {act.category}
+                              </span>
+                              <div className="text-xs text-slate-800 leading-relaxed whitespace-pre-line font-medium">
+                                {act.taskDescription}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-1 shrink-0 pt-0.5">
+                              <button
+                                type="button"
+                                onClick={(e) => handleEditActivityFromCell(day, act, e)}
+                                className="p-1 text-blue-600 hover:bg-blue-100 rounded transition"
+                                title="Edit"
+                              >
+                                <Edit2 className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={(e) => handleDeleteActivityFromCell(act.id, e)}
+                                className="p-1 text-rose-600 hover:bg-rose-100 rounded transition"
+                                title="Hapus"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="py-2 text-center text-xs text-slate-400 italic flex items-center justify-center gap-2">
+                        <span>Belum ada kegiatan untuk hari ini.</span>
+                        {day.isWorkingDay && (
+                          <button
+                            type="button"
+                            onClick={() => handleOpenDayModal(day)}
+                            className="text-blue-600 font-semibold underline not-italic hover:text-blue-800"
+                          >
+                            Isi kegiatan
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+      )}
+
+      {/* 5B. Visual Calendar Matrix */}
+      <div className={`bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden ${calendarViewMode === 'agenda' ? 'hidden md:block' : 'block'}`}>
+        <div className="overflow-x-auto">
+          <div className="min-w-[640px]">
         {/* Calendar Day Header */}
         <div className="grid grid-cols-7 border-b border-slate-200 bg-slate-100 text-center text-xs font-bold text-slate-700">
           {weekdayCols.map((col, idx) => {
@@ -552,11 +771,13 @@ export const CalendarManager: React.FC<CalendarManagerProps> = ({
           })}
         </div>
       </div>
+    </div>
+  </div>
 
-      {/* 5. Modal: Add or Edit Activity for Selected Day */}
+      {/* 6. Modal: Add or Edit Activity for Selected Day */}
       {isDayModalOpen && activeDayCell && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 border border-slate-200 animate-in fade-in zoom-in-95">
+        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-4 sm:p-6 border border-slate-200 animate-in fade-in zoom-in-95 max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div>
                 <h3 className="text-base font-bold text-slate-900">
@@ -581,26 +802,55 @@ export const CalendarManager: React.FC<CalendarManagerProps> = ({
             <form onSubmit={handleSaveDayActivity} className="space-y-4 mt-4">
               {/* Category */}
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Kategori Tugas
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  {(['Mengajar', 'Kepanitiaan', 'Kegiatan Lainnya'] as ActivityCategory[]).map(
-                    (cat) => (
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-semibold text-slate-700">
+                    Jenis Kegiatan (11 Kategori Madrasah)
+                  </label>
+                  <span className="text-[11px] font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                    {formCategory}
+                  </span>
+                </div>
+
+                <select
+                  value={formCategory}
+                  onChange={(e) => setFormCategory(e.target.value as ActivityCategory)}
+                  className="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-medium bg-white mb-2"
+                >
+                  {ACTIVITY_CATEGORIES.map((cat, idx) => (
+                    <option key={cat} value={cat}>
+                      {idx + 1}. {cat}
+                    </option>
+                  ))}
+                  {!ACTIVITY_CATEGORIES.includes(formCategory) && (
+                    <option value={formCategory}>{formCategory}</option>
+                  )}
+                </select>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-40 overflow-y-auto p-1.5 bg-slate-50 rounded-lg border border-slate-200">
+                  {ACTIVITY_CATEGORIES.map((cat, idx) => {
+                    const isSelected = formCategory === cat;
+                    return (
                       <button
                         key={cat}
                         type="button"
                         onClick={() => setFormCategory(cat)}
-                        className={`text-xs py-2 px-2 rounded-lg border font-medium transition text-center ${
-                          formCategory === cat
-                            ? 'bg-blue-50 border-blue-600 text-blue-700 ring-1 ring-blue-600'
-                            : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                        className={`text-left text-xs px-2.5 py-1.5 rounded-md border transition flex items-center gap-2 ${
+                          isSelected
+                            ? 'bg-blue-600 border-blue-600 text-white font-semibold shadow-xs'
+                            : 'bg-white border-slate-200 hover:border-blue-400 text-slate-700 hover:bg-blue-50/50'
                         }`}
                       >
-                        {cat}
+                        <span
+                          className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${
+                            isSelected ? 'bg-white text-blue-700' : 'bg-slate-100 text-slate-600'
+                          }`}
+                        >
+                          {idx + 1}
+                        </span>
+                        <span className="truncate">{cat}</span>
                       </button>
-                    )
-                  )}
+                    );
+                  })}
                 </div>
               </div>
 

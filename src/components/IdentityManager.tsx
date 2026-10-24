@@ -70,13 +70,13 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-6">
       {/* Top Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-2">
-            <span className="p-1.5 rounded-lg bg-blue-100 text-blue-700">
+            <span className="p-2 rounded-xl bg-blue-100 text-blue-700">
               <User className="w-5 h-5" />
             </span>
-            <h2 className="text-lg font-bold text-slate-900">
+            <h2 className="text-lg font-bold text-slate-900 tracking-tight">
               Pengelolaan Identitas Guru, Kepala &amp; Regulasi
             </h2>
           </div>
@@ -86,13 +86,13 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
         </div>
 
         {/* Sub-tab navigation */}
-        <div className="flex items-center bg-slate-100 p-1 rounded-lg text-xs font-medium">
+        <div className="grid grid-cols-3 gap-1 bg-slate-100 p-1.5 rounded-2xl text-xs sm:text-sm font-semibold w-full lg:w-auto">
           <button
             type="button"
             onClick={() => setActiveSubTab('teacher')}
-            className={`px-3 py-1.5 rounded-md transition ${
+            className={`py-2 px-2.5 text-center rounded-xl transition ${
               activeSubTab === 'teacher'
-                ? 'bg-white text-blue-700 shadow-xs font-semibold'
+                ? 'bg-white text-blue-700 shadow-xs font-bold'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -101,9 +101,9 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
           <button
             type="button"
             onClick={() => setActiveSubTab('supervisor')}
-            className={`px-3 py-1.5 rounded-md transition ${
+            className={`py-2 px-2.5 text-center rounded-xl transition ${
               activeSubTab === 'supervisor'
-                ? 'bg-white text-blue-700 shadow-xs font-semibold'
+                ? 'bg-white text-blue-700 shadow-xs font-bold'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -112,9 +112,9 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
           <button
             type="button"
             onClick={() => setActiveSubTab('periode')}
-            className={`px-3 py-1.5 rounded-md transition ${
+            className={`py-2 px-2.5 text-center rounded-xl transition ${
               activeSubTab === 'periode'
-                ? 'bg-white text-blue-700 shadow-xs font-semibold'
+                ? 'bg-white text-blue-700 shadow-xs font-bold'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -127,38 +127,38 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
       {activeSubTab === 'teacher' && (
         <div className="space-y-6">
           {/* Quick preset chips */}
-          <div className="flex flex-wrap items-center gap-2 text-xs bg-blue-50/60 p-3 rounded-xl border border-blue-100">
-            <span className="text-[11px] font-semibold text-blue-900 flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-              Template Status Guru:
+          <div className="flex flex-wrap items-center gap-2 text-xs bg-blue-50/70 p-3.5 rounded-2xl border border-blue-200">
+            <span className="text-xs font-bold text-blue-900 flex items-center gap-1.5 mr-1">
+              <Sparkles className="w-4 h-4 text-blue-600" />
+              Template Guru:
             </span>
             <button
               type="button"
               onClick={() => handleApplyPreset('pns')}
-              className="px-2.5 py-1 bg-white border border-blue-200 hover:border-blue-400 rounded-md text-slate-700 font-medium"
+              className="px-3 py-1.5 bg-white border border-blue-300 hover:border-blue-500 rounded-xl text-slate-800 font-semibold shadow-2xs"
             >
               Guru PNS (Golongan III)
             </button>
             <button
               type="button"
               onClick={() => handleApplyPreset('pppk')}
-              className="px-2.5 py-1 bg-white border border-blue-200 hover:border-blue-400 rounded-md text-slate-700 font-medium"
+              className="px-3 py-1.5 bg-white border border-blue-300 hover:border-blue-500 rounded-xl text-slate-800 font-semibold shadow-2xs"
             >
               Guru PPPK (Golongan IX)
             </button>
             <button
               type="button"
               onClick={() => handleApplyPreset('honorer')}
-              className="px-2.5 py-1 bg-white border border-blue-200 hover:border-blue-400 rounded-md text-slate-700 font-medium"
+              className="px-3 py-1.5 bg-white border border-blue-300 hover:border-blue-500 rounded-xl text-slate-800 font-semibold shadow-2xs"
             >
               Guru Non-PNS / Honorer
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
             {/* Nama Lengkap */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Nama Lengkap Guru (beserta Gelar Akademik)
               </label>
               <input
@@ -166,16 +166,16 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 value={teacher.name}
                 onChange={(e) => onUpdateTeacher({ ...teacher, name: e.target.value })}
                 placeholder="Contoh: ACHMAD NURICHSAN, S.Pd"
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-medium"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-medium bg-white"
               />
-              <span className="text-[10px] text-slate-400 mt-1 block">
+              <span className="text-[11px] text-slate-500 mt-1 block">
                 Ditampilkan di bagian atas dokumen dan di bawah tanda tangan kanan.
               </span>
             </div>
 
             {/* NIP */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 NIP (Nomor Induk Pegawai)
               </label>
               <input
@@ -183,16 +183,16 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 value={teacher.nip}
                 onChange={(e) => onUpdateTeacher({ ...teacher, nip: e.target.value })}
                 placeholder="19930221 201903 1 006 (atau '-' jika Non-PNS)"
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-mono"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-mono bg-white"
               />
-              <span className="text-[10px] text-slate-400 mt-1 block">
+              <span className="text-[11px] text-slate-500 mt-1 block">
                 Isi dengan 18 digit NIP atau tanda strip (-) jika bukan PNS.
               </span>
             </div>
 
             {/* NUPTK */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 NUPTK (Nomor Unik Pendidik &amp; Tenaga Kependidikan)
               </label>
               <input
@@ -200,13 +200,13 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 value={teacher.nuptk || ''}
                 onChange={(e) => onUpdateTeacher({ ...teacher, nuptk: e.target.value })}
                 placeholder="Contoh: 8455771672130082"
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-mono"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-mono bg-white"
               />
             </div>
 
             {/* Pangkat / Golongan Ruang */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Pangkat / Golongan Ruang
               </label>
               <input
@@ -214,27 +214,27 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 value={teacher.rank || ''}
                 onChange={(e) => onUpdateTeacher({ ...teacher, rank: e.target.value })}
                 placeholder="Contoh: Penata Muda / III/a atau Ahli Pertama / IX"
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden bg-white"
               />
             </div>
 
             {/* Jabatan */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Jabatan Guru
               </label>
               <input
                 type="text"
                 value={teacher.position}
                 onChange={(e) => onUpdateTeacher({ ...teacher, position: e.target.value })}
-                placeholder="Guru Pertama Bidang Studi Penjaskes / Guru Mapel PJOK MTsN 1 Kotim"
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                placeholder="Guru Pertama Bidang Studi Penjaskes / Guru Mapel PJOK"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden bg-white"
               />
             </div>
 
             {/* Mata Pelajaran */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Mata Pelajaran yang Diampu
               </label>
               <input
@@ -242,13 +242,13 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 value={teacher.subject || ''}
                 onChange={(e) => onUpdateTeacher({ ...teacher, subject: e.target.value })}
                 placeholder="Contoh: PJOK / Pendidikan Jasmani Olahraga dan Kesehatan"
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden bg-white"
               />
             </div>
 
             {/* Unit Kerja */}
-            <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <div className="lg:col-span-2">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Unit Kerja / Satuan Pendidikan
               </label>
               <input
@@ -256,15 +256,15 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 value={teacher.unit}
                 onChange={(e) => onUpdateTeacher({ ...teacher, unit: e.target.value })}
                 placeholder="Contoh: Kemenag Agama Kab.Kotim / MIN 1 Kotawaringin Timur"
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden bg-white"
               />
             </div>
           </div>
 
           {/* Tanda Tangan Guru Box */}
-          <div className="p-4 border border-slate-200 rounded-xl bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-16 h-12 bg-white border border-slate-300 rounded-lg flex items-center justify-center p-1 overflow-hidden shadow-xs">
+          <div className="p-4 sm:p-5 border border-slate-200 rounded-2xl bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3.5">
+              <div className="w-16 h-12 bg-white border border-slate-300 rounded-xl flex items-center justify-center p-1 overflow-hidden shadow-2xs shrink-0">
                 {teacher.signatureImage ? (
                   <img
                     src={teacher.signatureImage}
@@ -276,7 +276,7 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 )}
               </div>
               <div>
-                <div className="text-xs font-bold text-slate-900">
+                <div className="text-xs sm:text-sm font-bold text-slate-900">
                   Tanda Tangan Guru Bidang Studi
                 </div>
                 <div className="text-[11px] text-slate-500">
@@ -288,10 +288,10 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
             <button
               type="button"
               onClick={onOpenTeacherSignature}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-blue-700 bg-white hover:bg-blue-50 border border-blue-200 rounded-lg shadow-xs transition"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 text-xs sm:text-sm font-bold text-blue-700 bg-white hover:bg-blue-50 border border-blue-300 rounded-xl shadow-2xs transition"
             >
-              <PenTool className="w-3.5 h-3.5 text-blue-600" />
-              Ganti / Gores Tanda Tangan Guru
+              <PenTool className="w-4 h-4 text-blue-600" />
+              <span>Ganti / Gores Tanda Tangan Guru</span>
             </button>
           </div>
         </div>
@@ -300,10 +300,10 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
       {/* SUB-TAB 2: IDENTITAS KEPALA */}
       {activeSubTab === 'supervisor' && (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
             {/* Nama Kepala */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Nama Kepala Madrasah / Sekolah (beserta Gelar)
               </label>
               <input
@@ -311,16 +311,16 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 value={supervisor.name}
                 onChange={(e) => onUpdateSupervisor({ ...supervisor, name: e.target.value })}
                 placeholder="Contoh: Drs. Aceng Abudin, MM"
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-medium"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-medium bg-white"
               />
-              <span className="text-[10px] text-slate-400 mt-1 block">
+              <span className="text-[11px] text-slate-500 mt-1 block">
                 Ditampilkan di bagian kiri bawah dokumen tanda tangan.
               </span>
             </div>
 
             {/* NIP Kepala */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 NIP Kepala
               </label>
               <input
@@ -328,13 +328,13 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 value={supervisor.nip}
                 onChange={(e) => onUpdateSupervisor({ ...supervisor, nip: e.target.value })}
                 placeholder="Contoh: 196808061994021004"
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-mono"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-mono bg-white"
               />
             </div>
 
             {/* Jabatan Kepala */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Jabatan Kepala
               </label>
               <input
@@ -342,13 +342,13 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 value={supervisor.position}
                 onChange={(e) => onUpdateSupervisor({ ...supervisor, position: e.target.value })}
                 placeholder="Contoh: Kepala MIN 1 Kotawaringin Timur"
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden bg-white"
               />
             </div>
 
             {/* Pangkat / Golongan Kepala */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Pangkat / Golongan Ruang Kepala
               </label>
               <input
@@ -356,13 +356,13 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 value={supervisor.rank || ''}
                 onChange={(e) => onUpdateSupervisor({ ...supervisor, rank: e.target.value })}
                 placeholder="Contoh: Pembina Tk. I / IV/b"
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden bg-white"
               />
             </div>
 
             {/* Kota Penandatanganan */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Tempat / Kota Pengesahan Laporan
               </label>
               <input
@@ -370,13 +370,13 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 value={supervisor.signingCity || ''}
                 onChange={(e) => onUpdateSupervisor({ ...supervisor, signingCity: e.target.value })}
                 placeholder="Contoh: Sampit / Kotawaringin Timur"
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden bg-white"
               />
             </div>
 
             {/* Tanggal Penandatanganan */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Tanggal Pengesahan Laporan
               </label>
               <input
@@ -384,13 +384,13 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 value={supervisor.signingDate || ''}
                 onChange={(e) => onUpdateSupervisor({ ...supervisor, signingDate: e.target.value })}
                 placeholder="Contoh: 30 September 2026"
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden bg-white"
               />
             </div>
 
             {/* Instansi Induk */}
-            <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <div className="lg:col-span-2">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Instansi / Kantor Wilayah
               </label>
               <input
@@ -398,15 +398,15 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 value={supervisor.unit || ''}
                 onChange={(e) => onUpdateSupervisor({ ...supervisor, unit: e.target.value })}
                 placeholder="Contoh: Kantor Kementerian Agama Kabupaten Kotawaringin Timur"
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden bg-white"
               />
             </div>
           </div>
 
           {/* Tanda Tangan Kepala Box */}
-          <div className="p-4 border border-slate-200 rounded-xl bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-16 h-12 bg-white border border-slate-300 rounded-lg flex items-center justify-center p-1 overflow-hidden shadow-xs">
+          <div className="p-4 sm:p-5 border border-slate-200 rounded-2xl bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3.5">
+              <div className="w-16 h-12 bg-white border border-slate-300 rounded-xl flex items-center justify-center p-1 overflow-hidden shadow-2xs shrink-0">
                 {supervisor.signatureImage ? (
                   <img
                     src={supervisor.signatureImage}
@@ -418,7 +418,7 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 )}
               </div>
               <div>
-                <div className="text-xs font-bold text-slate-900">
+                <div className="text-xs sm:text-sm font-bold text-slate-900">
                   Tanda Tangan Kepala Madrasah / Sekolah
                 </div>
                 <div className="text-[11px] text-slate-500">
@@ -430,10 +430,10 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
             <button
               type="button"
               onClick={onOpenSupervisorSignature}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-blue-700 bg-white hover:bg-blue-50 border border-blue-200 rounded-lg shadow-xs transition"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 text-xs sm:text-sm font-bold text-blue-700 bg-white hover:bg-blue-50 border border-blue-300 rounded-xl shadow-2xs transition"
             >
-              <PenTool className="w-3.5 h-3.5 text-blue-600" />
-              Ganti / Gores Tanda Tangan Kepala
+              <PenTool className="w-4 h-4 text-blue-600" />
+              <span>Ganti / Gores Tanda Tangan Kepala</span>
             </button>
           </div>
         </div>
@@ -442,16 +442,16 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
       {/* SUB-TAB 3: PERIODE & REGULASI */}
       {activeSubTab === 'periode' && (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
             {/* Bulan */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Bulan Pelaporan Kinerja
               </label>
               <select
                 value={config.monthName}
                 onChange={(e) => onUpdateConfig({ ...config, monthName: e.target.value })}
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-medium"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-semibold bg-white"
               >
                 {months.map((m) => (
                   <option key={m} value={m}>
@@ -463,40 +463,40 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
 
             {/* Tahun */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Tahun
               </label>
               <input
                 type="number"
                 value={config.year}
                 onChange={(e) => onUpdateConfig({ ...config, year: parseInt(e.target.value) || 2026 })}
-                className="w-full text-xs px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-mono"
+                className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-mono bg-white"
               />
             </div>
 
             {/* Regulasi Lampiran I */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Header Kotak Regulasi Lampiran I
               </label>
               <textarea
                 rows={3}
                 value={config.lampiran1RegHeader}
                 onChange={(e) => onUpdateConfig({ ...config, lampiran1RegHeader: e.target.value })}
-                className="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-mono"
+                className="w-full text-sm px-3.5 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-mono bg-white"
               />
             </div>
 
             {/* Regulasi Lampiran II */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
                 Header Kotak Regulasi Lampiran II
               </label>
               <textarea
                 rows={3}
                 value={config.lampiran2RegHeader}
                 onChange={(e) => onUpdateConfig({ ...config, lampiran2RegHeader: e.target.value })}
-                className="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-mono"
+                className="w-full text-sm px-3.5 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-mono bg-white"
               />
             </div>
           </div>

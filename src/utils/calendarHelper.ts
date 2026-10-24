@@ -261,9 +261,29 @@ export function generateMonthlyActivitiesSchedule(
       config.year
     );
 
-    const category: ActivityCategory = taskDesc.includes('Panitia')
-      ? 'Kepanitiaan'
-      : 'Mengajar';
+    let category: ActivityCategory = 'Pembelajaran';
+    const lower = taskDesc.toLowerCase();
+    if (lower.includes('panitia') || lower.includes('maulid') || lower.includes('peringatan')) {
+      category = 'Peringatan Hari Besar dan Perayaan Madrasah';
+    } else if (lower.includes('asesmen') || lower.includes('penilaian') || lower.includes('evaluasi')) {
+      category = 'Asesmen';
+    } else if (lower.includes('sholat') || lower.includes('dzuhur') || lower.includes('rohani') || lower.includes('keagamaan')) {
+      category = 'Kegiatan Keagamaan';
+    } else if (lower.includes('upacara') || lower.includes('apel') || lower.includes('karakter') || lower.includes('senam')) {
+      category = 'Pembiasaan dan Penguatan Karakter';
+    } else if (lower.includes('bersih') || lower.includes('lingkungan')) {
+      category = 'Kebersihan dan Lingkungan Madrasah';
+    } else if (lower.includes('piket') || lower.includes('laporan') || lower.includes('rapat') || lower.includes('administrasi')) {
+      category = 'Administrasi dan Manajemen Madrasah';
+    } else if (lower.includes('ekskul') || lower.includes('pramuka') || lower.includes('kesiswaan')) {
+      category = 'Kegiatan Kesiswaan';
+    } else if (lower.includes('kkg') || lower.includes('mgmp') || lower.includes('pelatihan')) {
+      category = 'Pengembangan Kompetensi Guru';
+    } else if (lower.includes('komite') || lower.includes('orang tua') || lower.includes('wali')) {
+      category = 'Hubungan dengan Orang Tua dan Komite';
+    } else if (lower.includes('lomba') || lower.includes('kompetisi') || lower.includes('prestasi')) {
+      category = 'Kompetisi dan Pengembangan Prestasi';
+    }
 
     generatedList.push({
       id: `act-auto-${Date.now()}-${actCounter}`,

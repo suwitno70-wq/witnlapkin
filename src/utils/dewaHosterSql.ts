@@ -223,3 +223,50 @@ switch ($action) {
         break;
 }
 ?>`;
+
+export const DEWA_HOSTER_HTACCESS = `# ============================================================
+# .htaccess untuk Dewa Hoster (LiteSpeed / Apache)
+# Solusi Resmi Error 404 Not Found untuk React SPA & API
+# ============================================================
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 1. Izinkan akses langsung ke file atau folder yang benar-benar ada
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # 2. Izinkan pemanggilan langsung ke folder API PHP
+  RewriteRule ^api/(.*)$ api/$1 [L]
+
+  # 3. Arahkan semua rute halaman web ke index.html (Cegah 404 Not Found)
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Pengaturan Keamanan Tambahan
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+`;
+
+export const PRODUCTION_INDEX_HTML = `<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Laporan Kinerja Guru (Lampiran 1 &amp; 2)</title>
+    <meta name="description" content="Aplikasi pelaporan capaian kinerja harian dan bulanan guru (SKP) terintegrasi otomatis Lampiran I &amp; II, cetak presisi, tanda tangan digital, ekspor Word (.docx), dan integrasi database MySQL Dewa Hoster." />
+    <meta property="og:title" content="Sistem Laporan Kinerja Guru (Lampiran 1 &amp; 2)" />
+    <meta property="og:description" content="Aplikasi pelaporan capaian kinerja harian dan bulanan guru (SKP) terintegrasi otomatis Lampiran I &amp; II, cetak presisi, dan ekspor Word (.docx)." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="module" crossorigin src="./assets/index-BKL3tDGx.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-C-VPwgKH.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>`;
