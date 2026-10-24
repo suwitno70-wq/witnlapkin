@@ -165,7 +165,7 @@ export const IdentityManager: React.FC<IdentityManagerProps> = ({
                 type="text"
                 value={teacher.name}
                 onChange={(e) => onUpdateTeacher({ ...teacher, name: e.target.value })}
-                placeholder="Contoh: ACHMAD NURICHSAN, S.Pd"
+                placeholder="Contoh: SUWITNO, S.Pd.SD"
                 className="w-full text-sm px-3.5 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-medium bg-white"
               />
               <span className="text-[11px] text-slate-500 mt-1 block">

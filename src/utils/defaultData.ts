@@ -25,7 +25,7 @@ export const DEFAULT_REPORT_CONFIG: ReportConfig = {
 };
 
 export const DEFAULT_TEACHER: TeacherProfile = {
-  name: 'ACHMAD NURICHSAN, S.Pd',
+  name: 'SUWITNO, S.Pd.SD',
   nip: '19930221 201903 1 006',
   nuptk: '8455771672130082',
   rank: 'Penata Muda / III/a',

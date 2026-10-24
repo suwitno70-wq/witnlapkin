@@ -68,7 +68,19 @@ export default function App() {
 
   const [teacher, setTeacher] = useState<TeacherProfile>(() => {
     const saved = localStorage.getItem(`${LOCAL_STORAGE_KEY}_teacher`) || localStorage.getItem(`${PREV_LOCAL_STORAGE_KEY}_teacher`);
-    return saved ? JSON.parse(saved) : DEFAULT_TEACHER;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.name === 'ACHMAD NURICHSAN, S.Pd' || !parsed.name) {
+          parsed.name = 'SUWITNO, S.Pd.SD';
+          localStorage.setItem(`${LOCAL_STORAGE_KEY}_teacher`, JSON.stringify(parsed));
+        }
+        return parsed;
+      } catch {
+        return DEFAULT_TEACHER;
+      }
+    }
+    return DEFAULT_TEACHER;
   });
 
   const [supervisor, setSupervisor] = useState<SupervisorProfile>(() => {
