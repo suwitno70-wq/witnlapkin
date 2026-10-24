@@ -1,0 +1,6 @@
+{
+  "name": "Sistem Laporan Kinerja Guru (Lampiran 1 & 2)",
+  "description": "Aplikasi pelaporan capaian kinerja harian dan bulanan guru (SKP) terintegrasi otomatis Lampiran I & II, cetak presisi, tanda tangan digital, ekspor Word (.docx), dan integrasi database MySQL Dewa Hoster.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
